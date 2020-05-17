@@ -119,9 +119,12 @@ const Home = ({ dispatch, boards }) => {
 
   const handleTitleChange = (event) => setNewBoardTitle(event.target.value);
 
-  const handleDeleteBoard = (event, { boardId, title }) => {
+  const handleDeleteBoard = (event, boardId) => {
     event.preventDefault();
-    dispatch(deleteBoard(boardId));
+    let confirmDelete = window.confirm(
+      "Are you sure you want to delete this board?"
+    );
+    if (confirmDelete) dispatch(deleteBoard(boardId));
   };
 
   const handleAddBoard = (event, boardTitle) => {
@@ -138,7 +141,7 @@ const Home = ({ dispatch, boards }) => {
           <Row key={`row-${board._id}`}>
             <StyledLink to={`board/${board._id}`}>{board.title}</StyledLink>
             <StyledDeleteBoardButton
-              onClick={(event) => handleDeleteBoard(event, board)}
+              onClick={(event) => handleDeleteBoard(event, board._id)}
             >
               <FaTimesCircle size={18} />
             </StyledDeleteBoardButton>

@@ -1,17 +1,23 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
-import {Droppable, Draggable} from 'react-beautiful-dnd';
-import styled from 'styled-components';
-import ClickOutside from '../../components/ClickOutside';
-import Button from '../../components/Button';
-import ListCard from '../../components/ListCard';
-import ListTitleButton from '../../components/ListTitleButton';
-import DeleteListButton from '../../components/DeleteListButton';
-import DeleteCardButton from '../../components/DeleteCardButton';
-import EditCardButton from '../../components/EditCardButton';
-import CardTextarea from '../../components/CardTextarea';
-import ListTitleTextarea from '../../components/ListTitleTextarea';
-import {addCard, editCardTitle, deleteCard, editListTitle, deleteList} from '../../actions/actionCreators';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Droppable, Draggable } from "react-beautiful-dnd";
+import styled from "styled-components";
+import ClickOutside from "../../components/ClickOutside";
+import Button from "../../components/Button";
+import ListCard from "../../components/ListCard";
+import ListTitleButton from "../../components/ListTitleButton";
+import DeleteListButton from "../../components/DeleteListButton";
+import DeleteCardButton from "../../components/DeleteCardButton";
+import EditCardButton from "../../components/EditCardButton";
+import CardTextarea from "../../components/CardTextarea";
+import ListTitleTextarea from "../../components/ListTitleTextarea";
+import {
+  addCard,
+  editCardTitle,
+  deleteCard,
+  editListTitle,
+  deleteList,
+} from "../../actions/actionCreators";
 
 const TextareaWrapper = styled.div`
   display: flex;
@@ -29,7 +35,7 @@ const ListTitleTextareaWrapper = styled.div`
   padding: 0 10px;
 `;
 
-const CardTextareaForm = styled(TextareaWrapper.withComponent('form'))`
+const CardTextareaForm = styled(TextareaWrapper.withComponent("form"))`
   margin: 0 10px 10px 10px;
 `;
 
@@ -80,18 +86,18 @@ const ButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const List = ({dispatch, boardId, cards, list}) => {
+const List = ({ dispatch, boardId, cards, list }) => {
   const [newCardFormIsOpen, setNewCardFormIsOpen] = useState(false);
   const [isListTitleInEdit, setIsListTitleInEdit] = useState(false);
   const [cardInEdit, setCardInEdit] = useState(null);
-  const [newCardTitle, setNewCardTitle] = useState('');
-  const [newListTitle, setNewListTitle] = useState('');
-  const [tempCardTitle, setTempCardTitle] = useState('');
+  const [newCardTitle, setNewCardTitle] = useState("");
+  const [newListTitle, setNewListTitle] = useState("");
+  const [tempCardTitle, setTempCardTitle] = useState("");
 
   const toggleCardComposer = () => setNewCardFormIsOpen(!newCardFormIsOpen);
 
   const handleCardComposerChange = (event) => {
-    setNewCardTitle(event.target.value.trim());
+    setNewCardTitle(event.target.value);
   };
 
   const handleKeyDown = (event, callback) => {
@@ -104,7 +110,7 @@ const List = ({dispatch, boardId, cards, list}) => {
     event.preventDefault();
     if (newCardTitle.length < 1) return;
     dispatch(addCard(newCardTitle, list._id, boardId));
-    setNewCardTitle('');
+    setNewCardTitle("");
     setNewCardFormIsOpen(false);
   };
 
@@ -127,12 +133,15 @@ const List = ({dispatch, boardId, cards, list}) => {
     } else {
       dispatch(editCardTitle(tempCardTitle, cardInEdit, list, boardId));
     }
-    setTempCardTitle('');
+    setTempCardTitle("");
     setCardInEdit(null);
   };
 
-  const handleDeleteCard = (cardId) => {
-    dispatch(deleteCard(cardId, list._id, boardId));
+  const handleDeleteCard = (cardId, title) => {
+    let deleteConfirmed = window.confirm(
+      `Do you want to delete this card? \nTitle: ${title}`
+    );
+    if (deleteConfirmed) dispatch(deleteCard(cardId, list._id, boardId));
   };
 
   const openTitleEditor = () => {
@@ -143,13 +152,16 @@ const List = ({dispatch, boardId, cards, list}) => {
   const handleSubmitListTitle = () => {
     if (newListTitle.length < 1) return;
     dispatch(editListTitle(newListTitle, list._id, boardId));
-    setNewListTitle('');
+    setNewListTitle("");
     setIsListTitleInEdit(false);
   };
 
   const handleDeleteListButtonClick = (event) => {
     event.preventDefault();
-    dispatch(deleteList(list.cards, list._id, boardId));
+    let confirmDelete = window.confirm(
+      "Are you sure you want to delete this list?"
+    );
+    if (confirmDelete) dispatch(deleteList(list.cards, list._id, boardId));
   };
 
   return (
@@ -164,7 +176,11 @@ const List = ({dispatch, boardId, cards, list}) => {
         </ListTitleTextareaWrapper>
       ) : (
         <ListTitle>
-          <ListTitleButton onFocus={openTitleEditor} onClick={openTitleEditor} text={list.title} />
+          <ListTitleButton
+            onFocus={openTitleEditor}
+            onClick={openTitleEditor}
+            text={list.title}
+          />
           <DeleteListButton onClick={(e) => handleDeleteListButtonClick(e)} />
         </ListTitle>
       )}
@@ -173,7 +189,12 @@ const List = ({dispatch, boardId, cards, list}) => {
           <div ref={provided.innerRef}>
             {cards.map((card, index) => (
               <Draggable key={card._id} draggableId={card._id} index={index}>
-                {({innerRef, draggableProps, dragHandleProps, placeholder}) => (
+                {({
+                  innerRef,
+                  draggableProps,
+                  dragHandleProps,
+                  placeholder,
+                }) => (
                   <div>
                     {cardInEdit !== card._id ? (
                       <CardTitle
@@ -181,11 +202,18 @@ const List = ({dispatch, boardId, cards, list}) => {
                         {...draggableProps}
                         {...dragHandleProps}
                         data-react-beautiful-dnd-draggable="0"
-                        data-react-beautiful-dnd-drag-handle="0">
+                        data-react-beautiful-dnd-drag-handle="0"
+                      >
                         {card.title}
                         <ButtonWrapper>
-                          <DeleteCardButton onClick={() => handleDeleteCard(card._id)} />
-                          <EditCardButton onClick={() => openCardEditor(card)} />
+                          <DeleteCardButton
+                            onClick={() =>
+                              handleDeleteCard(card._id, card.title)
+                            }
+                          />
+                          <EditCardButton
+                            onClick={() => openCardEditor(card)}
+                          />
                         </ButtonWrapper>
                       </CardTitle>
                     ) : (
@@ -212,13 +240,22 @@ const List = ({dispatch, boardId, cards, list}) => {
                     onChange={handleCardComposerChange}
                     onKeyDown={(e) => handleKeyDown(e, handleSubmitCard)}
                   />
-                  <Button variant="add" type="submit" text="Add" disabled={newCardTitle === ''} />
+                  <Button
+                    variant="add"
+                    type="submit"
+                    text="Add"
+                    disabled={newCardTitle === ""}
+                  />
                 </CardTextareaForm>
               </ClickOutside>
             )}
             {newCardFormIsOpen || (
               <ComposerWrapper>
-                <Button variant="card" text="Add new card" onClick={toggleCardComposer}>
+                <Button
+                  variant="card"
+                  text="Add new card"
+                  onClick={toggleCardComposer}
+                >
                   Add new card
                 </Button>
               </ComposerWrapper>
@@ -231,7 +268,7 @@ const List = ({dispatch, boardId, cards, list}) => {
 };
 
 const mapStateToProps = (state, props) => ({
-  cards: props.list.cards.map((cardId) => state.cardsById[cardId])
+  cards: props.list.cards.map((cardId) => state.cardsById[cardId]),
 });
 
 export default connect(mapStateToProps)(List);
