@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import Routes from './routes'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Routes from "./containers/Routes";
 
-import './App.css'
+import "./App.css";
 
 class App extends Component {
   static propTypes = {
-    init: PropTypes.func
-  }
+    init: PropTypes.func,
+  };
 
   render() {
-    this.props.init()
+    this.props.init();
 
     return (
       <div className="App">
         <Routes />
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;

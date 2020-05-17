@@ -1,9 +1,9 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import Home from "../Home";
 import Board from "../Board";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -23,13 +23,17 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = () => (
+const Routes = () => (
   <React.Fragment>
     <GlobalStyle />
-    <Header />
-    <Route exact path="/" component={Home} />
-    <Route path="/board/:boardId" component={Board} />
+    {/* <Header /> */}
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/board/:boardId" component={Board} />
+      </Switch>
+    </Router>
   </React.Fragment>
 );
 
-export default App;
+export default Routes;
