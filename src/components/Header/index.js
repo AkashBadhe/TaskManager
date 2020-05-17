@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import {Link} from 'react-router-dom';
-import {FaGithub} from 'react-icons/fa';
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { FaGithub } from "react-icons/fa";
 
 const Wrapper = styled.div`
   height: 50px;
@@ -53,7 +53,10 @@ const Header = () => {
           </span>
         </HomeLinkLogo>
       </HomeLink>
-      <GithubLink href="https://github.com/AkashBadhe/Task-Management-App.git" target="_blank">
+      <GithubLink
+        href="https://github.com/AkashBadhe/TaskManager"
+        target="_blank"
+      >
         <FaGithub size={20} />
       </GithubLink>
     </Wrapper>
