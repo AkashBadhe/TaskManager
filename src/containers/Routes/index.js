@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import Home from "../Home";
 import Board from "../Board";
@@ -24,16 +24,16 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Routes = () => (
-  <React.Fragment>
-    <GlobalStyle />
-    {/* <Header /> */}
-    <Router>
+  <Router>
+    <React.Fragment>
+      <GlobalStyle />
+      <Header />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/board/:boardId" component={Board} />
       </Switch>
-    </Router>
-  </React.Fragment>
+    </React.Fragment>
+  </Router>
 );
 
 export default Routes;

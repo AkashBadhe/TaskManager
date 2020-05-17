@@ -1,7 +1,6 @@
-import React from 'react';
-import onClickOutside from 'react-onclickoutside';
+import onClickOutside from "react-onclickoutside";
 
-const ClickOutsideWrapper = ({children, handleClickOutside}) => {
+const ClickOutsideWrapper = ({ children, handleClickOutside }) => {
   handleClickOutside = () => handleClickOutside();
   return children;
 };
