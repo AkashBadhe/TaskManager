@@ -1,3 +1,4 @@
+// TODO: Implement the mock service.
 import shortid from "shortid";
 export default class services {
   delay = 1000;

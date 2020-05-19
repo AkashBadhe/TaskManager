@@ -46,14 +46,15 @@ const GithubLink = styled.a`
 const Header = () => {
   return (
     <Wrapper>
-      <HomeLink to="/">
+      <HomeLink to="/" id="homeLink">
         <HomeLinkLogo>
-          <span role="img" aria-label="task">
+          <span role="img" aria-label="task" id="logo">
             Task Manager
           </span>
         </HomeLinkLogo>
       </HomeLink>
       <GithubLink
+        id="githubLink"
         href="https://github.com/AkashBadhe/TaskManager"
         target="_blank"
       >

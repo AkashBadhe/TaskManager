@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListTitleTextarea Should mount \`ListTitleTextarea\` 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ListTitleTextarea />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "autoFocus": true,
+      "onFocus": [Function],
+      "useCacheForDOMMeasurements": true,
+    },
+    "ref": null,
+    "rendered": null,
+    "type": Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "baseHash": 400283751,
+        "componentId": "sc-AxjAm",
+        "isStatic": false,
+        "rules": Array [
+          "
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+  height: 32px;
+  border-radius: 5px;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  color: inherit;
+  resize: none;
+",
+        ],
+        "staticRulesId": "",
+      },
+      "displayName": "styled.textarea",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "shouldForwardProp": undefined,
+      "styledComponentId": "sc-AxjAm",
+      "target": "textarea",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    },
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "autoFocus": true,
+        "onFocus": [Function],
+        "useCacheForDOMMeasurements": true,
+      },
+      "ref": null,
+      "rendered": null,
+      "type": Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "baseHash": 400283751,
+          "componentId": "sc-AxjAm",
+          "isStatic": false,
+          "rules": Array [
+            "
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+  height: 32px;
+  border-radius: 5px;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  color: inherit;
+  resize: none;
+",
+          ],
+          "staticRulesId": "",
+        },
+        "displayName": "styled.textarea",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "shouldForwardProp": undefined,
+        "styledComponentId": "sc-AxjAm",
+        "target": "textarea",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      },
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "disableLifecycleMethods": true,
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+}
+`;

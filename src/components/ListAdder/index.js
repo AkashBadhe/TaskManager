@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
-import styled from 'styled-components';
-import {addList} from '../../actions/actionCreators';
-import Button from '../Button';
-import ListTitleTextarea from '../ListTitleTextarea';
-import ListCard from '../ListCard';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { addList } from "../../actions/actionCreators";
+import Button from "../Button";
+import ListTitleTextarea from "../ListTitleTextarea";
+import ListCard from "../ListCard";
 
 const ListAdderTextareaWrapper = styled.div`
   height: 48px;
@@ -14,9 +14,9 @@ const ListAdderTextareaWrapper = styled.div`
   padding: 0 10px;
 `;
 
-const ListAdder = ({dispatch, boardId, numLeft}) => {
+export const ListAdder = ({ dispatch, boardId, numLeft }) => {
   const [isListInEdit, setIsListInEdit] = useState(false);
-  const [newListTitle, setNewListTitle] = useState('');
+  const [newListTitle, setNewListTitle] = useState("");
 
   const handleBlur = () => setIsListInEdit(false);
 
@@ -32,16 +32,27 @@ const ListAdder = ({dispatch, boardId, numLeft}) => {
   const handleSubmit = () => {
     dispatch(addList(newListTitle, boardId));
     setIsListInEdit(false);
-    setNewListTitle('');
+    setNewListTitle("");
   };
 
   if (!isListInEdit) {
-    return <Button variant="list" onClick={() => setIsListInEdit(true)} text={`Add a new list (${numLeft})`} />;
+    return (
+      <Button
+        variant="list"
+        onClick={() => setIsListInEdit(true)}
+        text={`Add a new list (${numLeft})`}
+      />
+    );
   }
   return (
     <ListCard>
       <ListAdderTextareaWrapper>
-        <ListTitleTextarea value={newListTitle} onChange={handleChange} onKeyDown={handleKeyDown} onBlur={handleBlur} />
+        <ListTitleTextarea
+          value={newListTitle}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
+        />
       </ListAdderTextareaWrapper>
     </ListCard>
   );
