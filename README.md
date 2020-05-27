@@ -1,5 +1,6 @@
 # Task Manager App
 
+This is simple task management app like Sticky Notes with drag-drop capabilities. User can create different boards to manage various tasks. On board page user can create various lists to sort there tasks. Tasks can be added to various lists and can also be moved across the lists by drag drop. 
   
 
 ## How to run the project
@@ -28,10 +29,121 @@ npm start
 
 ## Switch Themes
 
-<img  src="/assets/TaskManagerThemeChange.gif"  alt="app demo"  width="90%"/>
-
+<img  src="/assets/TaskManagerThemeChangeDemo.gif"  alt="app demo"  width="90%"/>
   
 ## Design
+App is created as single page application using [ReactJs]("https://github.com/facebook/react/") ecosystem. [React starter kit]("https://github.com/kriasoft/react-starter-kit") is used for bottstraping the application. Folder struction is as shown below.
+
+```
+TaskManager
+├─ .env
+├─ .eslintrc
+├─ .gitignore
+├─ .storybook
+│  ├─ addons.js
+│  └─ config.js
+├─ assets
+│  ├─ redux-thunk-flow.gif
+│  ├─ TaskManagerDemo.gif
+│  └─ TaskManagerThemeChangeDemo.gif
+├─ debug.log
+├─ LICENSE
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ favicon.ico
+│  ├─ index.html
+│  └─ manifest.json
+├─ README.md
+├─ src
+│  ├─ actions
+│  │  └─ actionCreators.js
+│  ├─ App.css
+│  ├─ App.js
+│  ├─ App.test.js
+│  ├─ AppContainer.js
+│  ├─ components
+│  │  ├─ Button
+│  │  │  ├─ Button.test.js
+│  │  │  ├─ index.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ Button.test.js.snap
+│  │  ├─ CardTextarea
+│  │  │  ├─ CardTextarea.test.js
+│  │  │  ├─ index.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ CardTextarea.test.js.snap
+│  │  ├─ ClickOutside
+│  │  │  └─ index.js
+│  │  ├─ DeleteCardButton
+│  │  │  ├─ DeleteCardButton.test.js
+│  │  │  ├─ index.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ DeleteCardButton.test.js.snap
+│  │  ├─ DeleteListButton
+│  │  │  ├─ DeleteListButton.test.js
+│  │  │  ├─ index.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ DeleteListButton.test.js.snap
+│  │  ├─ EditCardButton
+│  │  │  ├─ EditCardButton.test.js
+│  │  │  ├─ index.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ EditCardButton.test.js.snap
+│  │  ├─ Header
+│  │  │  ├─ Header.test.js
+│  │  │  ├─ index.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ Header.test.js.snap
+│  │  ├─ ListAdder
+│  │  │  ├─ index.js
+│  │  │  ├─ ListAdder.test.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ ListAdder.test.js.snap
+│  │  ├─ ListCard
+│  │  │  └─ index.js
+│  │  ├─ ListTitleButton
+│  │  │  ├─ index.js
+│  │  │  ├─ ListTitleButton.test.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ ListTitleButton.test.js.snap
+│  │  ├─ ListTitleTextarea
+│  │  │  ├─ index.js
+│  │  │  ├─ ListTitleTextarea.test.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ ListTitleTextarea.test.js.snap
+│  │  ├─ TextButton
+│  │  │  ├─ index.js
+│  │  │  ├─ TextButton.test.js
+│  │  │  └─ __snapshots__
+│  │  │     └─ TextButton.test.js.snap
+│  │  └─ Theme
+│  │     └─ index.js
+│  ├─ containers
+│  │  ├─ Board
+│  │  │  └─ index.js
+│  │  ├─ Home
+│  │  │  └─ index.js
+│  │  ├─ List
+│  │  │  └─ index.js
+│  │  └─ Routes
+│  │     └─ index.js
+│  ├─ index.css
+│  ├─ index.js
+│  ├─ reducers
+│  │  ├─ reducers.js
+│  │  └─ reducers.test.js
+│  ├─ registerServiceWorker.js
+│  ├─ routes
+│  │  └─ index.js
+│  ├─ services
+│  │  └─ index.js
+│  ├─ setupTests.js
+│  └─ tempPolyfills.js
+└─ stories
+   └─ index.js
+
+```
 **Routing** - App uses [react-router](https://reacttraining.com/react-router/) for route management. Currently app has only 2 routes ('/' and 'board/baordId'). If needed Addition routes can be added in "src/routes/index.js" file.
 **State Management** - App uses [Redux](https://redux.js.org/docs/introduction/) for state management. State object structure is as flows:
 
@@ -80,9 +192,13 @@ npm start
 
 **Async action** - [Redux-thunk](https://github.com/reduxjs/redux-thunk) is used to handle Async actions.
 <img src="/assets/redux-thunk-flow.gif" width="60%">
+
 **Drag-Drop** - App uses "[React beautiful DND](https://github.com/atlassian/react-beautiful-dnd)" for drag drop operations.
+
 **Styling** -  Most part of the app is styled with "[styled-components](https://styled-components.com/)" library. Support for "Material Ui" is added for future enhancements. 
+
 **Themes**- App currently supports two themes "Light" and "Dark". Theme is created using "[styled-theming](https://github.com/styled-components/styled-theming)". To change the theme edit the file "src\components\Theme\index.js".
+
 **Data Services** - All the data related oprations are kept in "[\src\services\index.js](https://github.com/AkashBadhe/TaskManager/blob/master/src/services/index.js)" file. Currently it implements the mock services which stores the data in browsers localStorage. This can be replaced with actual services wich will make api calls to getting and setting the data. 
   
   
