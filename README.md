@@ -6,3 +6,5 @@
 - .env - https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+
+<img src="/assets/TaskManagerDemo.gif" alt="app demo" width="90%"/>
