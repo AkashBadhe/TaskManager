@@ -32,7 +32,7 @@ npm start
 <img  src="/assets/TaskManagerThemeChangeDemo.gif"  alt="app demo"  width="90%"/>
   
 ## Design
-App is created as single page application using [ReactJs]("https://github.com/facebook/react/") ecosystem. [React starter kit]("https://github.com/kriasoft/react-starter-kit") is used for bottstraping the application. Folder struction is as shown below.
+App is created as single page application using [ReactJs]("https://github.com/facebook/react/") ecosystem. [React starter kit]("https://github.com/kriasoft/react-starter-kit") is used for bootstrap the application. Folder struction is as shown below.
 
 ```
 TaskManager
@@ -200,6 +200,8 @@ TaskManager
 **Themes**- App currently supports two themes "Light" and "Dark". Theme is created using "[styled-theming](https://github.com/styled-components/styled-theming)". To change the theme edit the file "src\components\Theme\index.js".
 
 **Data Services** - All the data related oprations are kept in "[\src\services\index.js](https://github.com/AkashBadhe/TaskManager/blob/master/src/services/index.js)" file. Currently it implements the mock services which stores the data in browsers localStorage. This can be replaced with actual services wich will make api calls to getting and setting the data. 
+
+**Unit Testing** - Jest is used for unit testing. Default setup wich comes with react starter kit is used. 
   
   
 
