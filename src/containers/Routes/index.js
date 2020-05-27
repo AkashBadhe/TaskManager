@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import Home from "../Home";
 import Board from "../Board";
@@ -26,8 +26,8 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Routes = ({toggleTheme, darkMode}) => (
-  <Router>
+const Routes = ({ toggleTheme, darkMode }) => (
+  <HashRouter basename="/">
     <React.Fragment>
       <GlobalStyle />
       <Header toggleTheme={toggleTheme} darkMode={darkMode} />
@@ -36,7 +36,7 @@ const Routes = ({toggleTheme, darkMode}) => (
         <Route path="/board/:boardId" component={Board} />
       </Switch>
     </React.Fragment>
-  </Router>
+  </HashRouter>
 );
 
 export default Routes;

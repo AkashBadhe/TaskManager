@@ -25,14 +25,14 @@ npm start
 
 <img  src="/assets/TaskManagerDemo.gif"  alt="app demo"  width="90%"/>
 
-  
+Demo Link: [https://quizzical-lamarr-30ce51.netlify.app/](https://quizzical-lamarr-30ce51.netlify.app/)  
 
 ## Switch Themes
 
 <img  src="/assets/TaskManagerThemeChangeDemo.gif"  alt="app demo"  width="90%"/>
   
 ## Design
-App is created as single page application using [ReactJs]("https://github.com/facebook/react/") ecosystem. [React starter kit]("https://github.com/kriasoft/react-starter-kit") is used for bootstrap the application. Folder struction is as shown below.
+App is created as single page application using [ReactJs](https://github.com/facebook/react/) ecosystem. [React starter kit](https://github.com/kriasoft/react-starter-kit) is used for bootstrap the application. Folder struction is as shown below.
 
 ```
 TaskManager
