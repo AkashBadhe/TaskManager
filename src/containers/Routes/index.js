@@ -4,9 +4,12 @@ import { createGlobalStyle } from "styled-components";
 import Home from "../Home";
 import Board from "../Board";
 import Header from "../../components/Header";
+import { primaryBackgroundColor, textColor } from "../../components/Theme";
 
 const GlobalStyle = createGlobalStyle`
   body {
+    background-color: ${primaryBackgroundColor};
+    color: ${textColor};
     margin: 0;
     overflow-x: auto;
     color: rgb(46, 68, 78);
@@ -23,11 +26,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Routes = () => (
+const Routes = ({toggleTheme, darkMode}) => (
   <Router>
     <React.Fragment>
       <GlobalStyle />
-      <Header />
+      <Header toggleTheme={toggleTheme} darkMode={darkMode} />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/board/:boardId" component={Board} />

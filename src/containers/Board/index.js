@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import List from "../List";
 import ListAdder from "../../components/ListAdder";
-import { reorderList, reorderBoard } from "../../actions/actionCreators";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { textColor } from "../../components/Theme";
+
+import {
+  reorderList,
+  reorderBoard,
+  getBoardById,
+} from "../../actions/actionCreators";
 
 const StyledBoard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(100vh - 111px);
   overflow-x: auto;
   overflow-y: auto;
+  max-width: 91%;
+  margin: 10px auto;
 
   @media (max-width: 1436px) {
     align-items: ${(props) => props.numLists > 3 && "self-start"};
@@ -43,13 +52,14 @@ const BoardTitleWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  color: black;
+  color: ${textColor};
 `;
 
 const ListsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
-  padding: 8px;
+  padding: 20px 8px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -57,6 +67,9 @@ const ListsWrapper = styled.div`
 `;
 
 const Board = ({ dispatch, lists, boardTitle, boardId }) => {
+  useEffect(() => {
+    dispatch(getBoardById(boardId));
+  }, [boardId]);
   const handleDragEnd = ({ draggableId, source, destination, type }) => {
     // dropped outside the list
     if (!destination) {
@@ -88,6 +101,7 @@ const Board = ({ dispatch, lists, boardTitle, boardId }) => {
 
   return (
     <React.Fragment>
+      <ToastContainer />
       <BoardTitleWrapper>
         <BoardTitle>{boardTitle}</BoardTitle>
       </BoardTitleWrapper>
@@ -96,40 +110,37 @@ const Board = ({ dispatch, lists, boardTitle, boardId }) => {
           <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
             {(droppableProvided) => (
               <ListsWrapper ref={droppableProvided.innerRef}>
-                {lists.map((list, index) => (
-                  <Draggable
-                    key={list._id}
-                    draggableId={list._id}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <React.Fragment>
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          data-react-beautiful-dnd-draggable="0"
-                          data-react-beautiful-dnd-drag-handle="0"
-                        >
-                          <List
-                            list={list}
-                            boardId={boardId}
-                            style={{ height: "initial" }}
-                          />
-                        </div>
-                        {provided.placeholder}
-                      </React.Fragment>
-                    )}
-                  </Draggable>
-                ))}
-                {droppableProvided.placeholder}
-                {lists.length < 5 && (
-                  <ListAdder
-                    boardId={boardId}
-                    numLeft={5 - lists.length}
-                    style={{ height: "initial" }}
-                  />
+                {lists.map(
+                  (list, index) =>
+                    list && (
+                      <Draggable
+                        key={list._id}
+                        draggableId={list._id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <React.Fragment>
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              data-react-beautiful-dnd-draggable="0"
+                              data-react-beautiful-dnd-drag-handle="0"
+                            >
+                              <List
+                                list={list}
+                                boardId={boardId}
+                                style={{ height: "initial" }}
+                              />
+                            </div>
+                            {provided.placeholder}
+                          </React.Fragment>
+                        )}
+                      </Draggable>
+                    )
                 )}
+                {droppableProvided.placeholder}
+                <ListAdder boardId={boardId} style={{ height: "initial" }} />
               </ListsWrapper>
             )}
           </Droppable>
@@ -142,9 +153,14 @@ const Board = ({ dispatch, lists, boardTitle, boardId }) => {
 const mapStateToProps = (state, props) => {
   const { boardId } = props.match.params;
   const board = state.boardsById[boardId];
+  let lists = [];
+  if (board && state.listsById && Object.keys(state.listsById).length) {
+    lists = board.lists.map((listId) => state.listsById[listId]);
+  }
+
   return {
-    lists: board.lists.map((listId) => state.listsById[listId]),
-    boardTitle: board.title,
+    lists,
+    boardTitle: board ? board.title : "",
     boardId,
   };
 };

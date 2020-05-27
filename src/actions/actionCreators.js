@@ -1,121 +1,173 @@
-import axios from 'axios';
-import shortid from 'shortid';
+// import axios from "axios";
+import services from "../services";
 /* eslint-disable no-console */
 
 export const addCard = (cardTitle, listId, boardId) => (dispatch) => {
-  const cardId = shortid.generate();
-  dispatch({
-    type: 'ADD_CARD',
-    payload: {cardTitle, cardId, listId}
-  });
-  axios.post('/api/card', {cardTitle, cardId, listId, boardId}).then(({data}) => console.log(data));
+  services
+    .addCard(cardTitle, listId, boardId)
+    .then(({ cardTitle, cardId, listId }) => {
+      dispatch({
+        type: "ADD_CARD",
+        payload: { cardTitle, cardId, listId },
+      });
+    });
 };
 
-export const editCardTitle = (cardTitle, cardId, list, boardId) => (dispatch) => {
-  dispatch({
-    type: 'EDIT_CARD_TITLE',
-    payload: {
-      cardTitle,
-      cardId,
-      listId: list._id
-    }
-  });
-  const cardIndex = list.cards.indexOf(cardId);
-  axios.put('/api/card', {cardTitle, cardIndex, listId: list._id, boardId}).then(({data}) => console.log(data));
+export const editCardTitle = (cardTitle, cardId, list, boardId) => (
+  dispatch
+) => {
+  services
+    .editCard(cardTitle, cardId, list._id, boardId)
+    .then(({ cardTitle, cardId, listId }) => {
+      dispatch({
+        type: "EDIT_CARD_TITLE",
+        payload: {
+          cardTitle,
+          cardId,
+          listId: list._id,
+        },
+      });
+    });
 };
 
 export const deleteCard = (cardId, listId, boardId) => (dispatch) => {
-  dispatch({type: 'DELETE_CARD', payload: {cardId, listId}});
-  axios.delete('/api/card', {data: {cardId, listId, boardId}}).then(({data}) => console.log(data));
+  services.deleteCard(cardId, listId, boardId).then(({ cardId, listId }) => {
+    dispatch({ type: "DELETE_CARD", payload: { cardId, listId } });
+  });
 };
 
-export const reorderList = (cardId, sourceId, destinationId, sourceIndex, destinationIndex, boardId) => (dispatch) => {
-  dispatch({
-    type: 'REORDER_LIST',
-    payload: {
-      sourceId,
-      destinationId,
-      sourceIndex,
-      destinationIndex
-    }
-  });
-
-  axios
-    .put('/api/reorder-list', {
+export const reorderList = (
+  cardId,
+  sourceId,
+  destinationId,
+  sourceIndex,
+  destinationIndex,
+  boardId
+) => (dispatch) => {
+  services
+    .reorderList(
       cardId,
       sourceId,
       destinationId,
       sourceIndex,
       destinationIndex,
       boardId
-    })
-    .then(({data}) => console.log(data));
+    )
+    .then(({ sourceId, destinationId, sourceIndex, destinationIndex }) => {
+      dispatch({
+        type: "REORDER_LIST",
+        payload: {
+          sourceId,
+          destinationId,
+          sourceIndex,
+          destinationIndex,
+        },
+      });
+    });
 };
 
 export const addList = (listTitle, boardId) => (dispatch) => {
-  const listId = shortid.generate();
-  dispatch({
-    type: 'ADD_LIST',
-    payload: {listTitle, listId, boardId}
-  });
-
-  axios.post('/api/list', {listTitle, listId, boardId}).then(({data}) => console.log(data));
+  services.addList(listTitle, boardId).then(
+    ({ boardId, listId, listTitle }) => {
+      dispatch({
+        type: "ADD_LIST",
+        payload: { boardId, listId, listTitle },
+      });
+    },
+    (error) => {}
+  );
 };
 
 export const editListTitle = (listTitle, listId, boardId) => (dispatch) => {
-  dispatch({
-    type: 'EDIT_LIST_TITLE',
-    payload: {
-      listTitle,
-      listId
-    }
-  });
-
-  axios.put('/api/list', {listTitle, listId, boardId}).then(({data}) => console.log(data));
+  services
+    .editListTitle(listTitle, listId, boardId)
+    .then(({ listTitle, listId }) => {
+      dispatch({
+        type: "EDIT_LIST_TITLE",
+        payload: {
+          listTitle,
+          listId,
+        },
+      });
+    });
 };
 
 export const deleteList = (cards, listId, boardId) => (dispatch) => {
-  dispatch({
-    type: 'DELETE_LIST',
-    payload: {cards, listId, boardId}
-  });
-  axios.delete('/api/list', {data: {listId, boardId}}).then(({data}) => console.log(data));
+  services
+    .deleteList(cards, listId, boardId)
+    .then(({ cards, listId, boardId }) => {
+      dispatch({
+        type: "DELETE_LIST",
+        payload: { cards, listId, boardId },
+      });
+    });
 };
 
 export const addBoard = (boardTitle) => (dispatch) => {
-  const boardId = shortid.generate();
-  dispatch({
-    type: 'ADD_BOARD',
-    payload: {boardTitle, boardId}
+  services.addBoard(boardTitle).then(({ boardTitle, boardId }) => {
+    dispatch({
+      type: "ADD_BOARD",
+      payload: { boardTitle, boardId },
+    });
   });
-
-  axios.post('/api/board', {boardTitle, boardId}).then(({data}) => console.log(data));
 };
 
 export const deleteBoard = (boardId) => (dispatch) => {
-  dispatch({
-    type: 'DELETE_BOARD',
-    payload: {boardId}
+  services.deleteBoard(boardId).then(({ boardId }) => {
+    dispatch({
+      type: "DELETE_BOARD",
+      payload: { boardId },
+    });
   });
-  axios.delete('/api/board', {data: {boardId}}).then(({data}) => console.log(data));
 };
 
-export const reorderBoard = (listId, sourceId, sourceIndex, destinationIndex) => (dispatch) => {
-  dispatch({
-    type: 'REORDER_LISTS',
-    payload: {
-      sourceId,
-      sourceIndex,
-      destinationIndex
-    }
-  });
+export const reorderBoard = (
+  listId,
+  sourceId,
+  sourceIndex,
+  destinationIndex
+) => (dispatch) => {
+  services
+    .reorderBoard(listId, sourceId, sourceIndex, destinationIndex)
+    .then(({ sourceId, sourceIndex, destinationIndex }) => {
+      dispatch({
+        type: "REORDER_LISTS",
+        payload: {
+          sourceId,
+          sourceIndex,
+          destinationIndex,
+        },
+      });
+    });
+};
 
-  axios
-    .put('/api/reorder-board', {
-      listId,
-      sourceId,
-      sourceIndex,
-      destinationIndex
-    })
-    .then(({data}) => console.log(data));
+export const getBoards = () => (dispatch) => {
+  services.getBoards().then((boards) => {
+    dispatch({
+      type: "GET_BOARDS",
+      payload: {
+        boards,
+      },
+    });
+  });
+};
+
+export const getBoardById = (boardId) => (dispatch) => {
+  services.getBoardById(boardId).then((board) => {
+    dispatch({
+      type: "GET_BOARD",
+      payload: {
+        board,
+      },
+    });
+    dispatch({
+      type: "GET_LISTS",
+      payload: { lists: board.lists },
+    });
+
+    dispatch({
+      type: "GET_CARDS",
+      payload: { lists: board.lists },
+    });
+  });
 };

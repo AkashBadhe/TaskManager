@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaTimesCircle } from "react-icons/fa";
 import Button from "../../components/Button";
-import { addBoard, deleteBoard } from "../../actions/actionCreators";
+import { addBoard, deleteBoard, getBoards } from "../../actions/actionCreators";
 
 const StyledHome = styled.div`
   display: flex;
@@ -115,6 +115,9 @@ const StyledDeleteBoardButton = styled.button`
 `;
 
 const Home = ({ dispatch, boards }) => {
+  useEffect(() => {
+    dispatch(getBoards());
+  }, []);
   const [newBoardTitle, setNewBoardTitle] = useState("");
 
   const handleTitleChange = (event) => setNewBoardTitle(event.target.value);

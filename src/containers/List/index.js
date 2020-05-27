@@ -11,6 +11,9 @@ import DeleteCardButton from "../../components/DeleteCardButton";
 import EditCardButton from "../../components/EditCardButton";
 import CardTextarea from "../../components/CardTextarea";
 import ListTitleTextarea from "../../components/ListTitleTextarea";
+import { toast } from "react-toastify";
+import services from "../../services";
+import { secondaryBackgroundColor } from "../../components/Theme";
 import {
   addCard,
   editCardTitle,
@@ -42,14 +45,16 @@ const CardTextareaForm = styled(TextareaWrapper.withComponent("form"))`
 const ComposerWrapper = styled.div`
   display: flex;
   justify-content: center;
-  background: #f8f8f8;
+  background: ${secondaryBackgroundColor};
   padding: 0 0 10px 0;
   border: none;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  margin: 30px 0px 20px;
 `;
 
 const ListTitle = styled.div`
+  margin: 15px 10px;
   display: flex;
   flex-shrink: 0;
   height: 48px;
@@ -102,6 +107,7 @@ const List = ({ dispatch, boardId, cards, list }) => {
 
   const handleKeyDown = (event, callback) => {
     if (event.keyCode === 13) {
+      event.preventDefault();
       callback(event);
     }
   };
@@ -124,7 +130,7 @@ const List = ({ dispatch, boardId, cards, list }) => {
   };
 
   const handleListTitleEditorChange = (event) => {
-    setNewListTitle(event.target.value.trim());
+    setNewListTitle(event.target.value);
   };
 
   const handleCardEdit = () => {
@@ -151,9 +157,15 @@ const List = ({ dispatch, boardId, cards, list }) => {
 
   const handleSubmitListTitle = () => {
     if (newListTitle.length < 1) return;
-    dispatch(editListTitle(newListTitle, list._id, boardId));
-    setNewListTitle("");
-    setIsListTitleInEdit(false);
+    services.getListByTitle(boardId, newListTitle).then((data) => {
+      if (data) {
+        toast.error("List with same name already exist.");
+      } else {
+        dispatch(editListTitle(newListTitle, list._id, boardId));
+        setNewListTitle("");
+        setIsListTitleInEdit(false);
+      }
+    });
   };
 
   const handleDeleteListButtonClick = (event) => {
@@ -164,6 +176,10 @@ const List = ({ dispatch, boardId, cards, list }) => {
     if (confirmDelete) dispatch(deleteList(list.cards, list._id, boardId));
   };
 
+  const handleTitleBlur = () => {
+    setIsListTitleInEdit(false);
+  };
+
   return (
     <ListCard>
       {isListTitleInEdit ? (
@@ -172,6 +188,7 @@ const List = ({ dispatch, boardId, cards, list }) => {
             value={newListTitle}
             onChange={handleListTitleEditorChange}
             onKeyDown={(e) => handleKeyDown(e, handleSubmitListTitle)}
+            onBlur={handleTitleBlur}
           />
         </ListTitleTextareaWrapper>
       ) : (
@@ -187,50 +204,59 @@ const List = ({ dispatch, boardId, cards, list }) => {
       <Droppable droppableId={list._id}>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {cards.map((card, index) => (
-              <Draggable key={card._id} draggableId={card._id} index={index}>
-                {({
-                  innerRef,
-                  draggableProps,
-                  dragHandleProps,
-                  placeholder,
-                }) => (
-                  <div>
-                    {cardInEdit !== card._id ? (
-                      <CardTitle
-                        ref={innerRef}
-                        {...draggableProps}
-                        {...dragHandleProps}
-                        data-react-beautiful-dnd-draggable="0"
-                        data-react-beautiful-dnd-drag-handle="0"
-                      >
-                        {card.title}
-                        <ButtonWrapper>
-                          <DeleteCardButton
-                            onClick={() =>
-                              handleDeleteCard(card._id, card.title)
-                            }
-                          />
-                          <EditCardButton
-                            onClick={() => openCardEditor(card)}
-                          />
-                        </ButtonWrapper>
-                      </CardTitle>
-                    ) : (
-                      <TextareaWrapper>
-                        <CardTextarea
-                          value={tempCardTitle}
-                          onChange={handleCardEditorChange}
-                          onKeyDown={(e) => handleKeyDown(e, handleCardEdit)}
-                          onBlur={handleCardEdit}
-                        />
-                      </TextareaWrapper>
+            {cards.map(
+              (card, index) =>
+                card && (
+                  <Draggable
+                    key={card._id}
+                    draggableId={card._id}
+                    index={index}
+                  >
+                    {({
+                      innerRef,
+                      draggableProps,
+                      dragHandleProps,
+                      placeholder,
+                    }) => (
+                      <div>
+                        {cardInEdit !== card._id ? (
+                          <CardTitle
+                            ref={innerRef}
+                            {...draggableProps}
+                            {...dragHandleProps}
+                            data-react-beautiful-dnd-draggable="0"
+                            data-react-beautiful-dnd-drag-handle="0"
+                          >
+                            {card.title}
+                            <ButtonWrapper>
+                              <DeleteCardButton
+                                onClick={() =>
+                                  handleDeleteCard(card._id, card.title)
+                                }
+                              />
+                              <EditCardButton
+                                onClick={() => openCardEditor(card)}
+                              />
+                            </ButtonWrapper>
+                          </CardTitle>
+                        ) : (
+                          <TextareaWrapper>
+                            <CardTextarea
+                              value={tempCardTitle}
+                              onChange={handleCardEditorChange}
+                              onKeyDown={(e) =>
+                                handleKeyDown(e, handleCardEdit)
+                              }
+                              onBlur={handleCardEdit}
+                            />
+                          </TextareaWrapper>
+                        )}
+                        {placeholder}
+                      </div>
                     )}
-                    {placeholder}
-                  </div>
-                )}
-              </Draggable>
-            ))}
+                  </Draggable>
+                )
+            )}
             {provided.placeholder}
             {newCardFormIsOpen && (
               <ClickOutside handleClickOutside={toggleCardComposer}>
@@ -267,8 +293,20 @@ const List = ({ dispatch, boardId, cards, list }) => {
   );
 };
 
-const mapStateToProps = (state, props) => ({
-  cards: props.list.cards.map((cardId) => state.cardsById[cardId]),
-});
+const mapStateToProps = (state, props) => {
+  let cards = [];
+
+  if (
+    state.cardsById &&
+    Object.keys(state.cardsById).length &&
+    props.list.cards.length
+  ) {
+    cards = props.list.cards.map((cardId) => state.cardsById[cardId]);
+  }
+
+  return {
+    cards,
+  };
+};
 
 export default connect(mapStateToProps)(List);

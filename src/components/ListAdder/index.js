@@ -5,6 +5,8 @@ import { addList } from "../../actions/actionCreators";
 import Button from "../Button";
 import ListTitleTextarea from "../ListTitleTextarea";
 import ListCard from "../ListCard";
+import { toast } from "react-toastify";
+import services from "../../services";
 
 const ListAdderTextareaWrapper = styled.div`
   height: 48px;
@@ -18,7 +20,9 @@ export const ListAdder = ({ dispatch, boardId, numLeft }) => {
   const [isListInEdit, setIsListInEdit] = useState(false);
   const [newListTitle, setNewListTitle] = useState("");
 
-  const handleBlur = () => setIsListInEdit(false);
+  const handleBlur = (e) => {
+    setIsListInEdit(false);
+  };
 
   const handleChange = (event) => setNewListTitle(event.target.value);
 
@@ -30,9 +34,15 @@ export const ListAdder = ({ dispatch, boardId, numLeft }) => {
   };
 
   const handleSubmit = () => {
-    dispatch(addList(newListTitle, boardId));
-    setIsListInEdit(false);
-    setNewListTitle("");
+    services.getListByTitle(boardId, newListTitle).then((data) => {
+      if (data) {
+        toast.error("List with same name already exist.");
+      } else {
+        dispatch(addList(newListTitle, boardId));
+        setIsListInEdit(false);
+        setNewListTitle("");
+      }
+    });
   };
 
   if (!isListInEdit) {
@@ -40,7 +50,7 @@ export const ListAdder = ({ dispatch, boardId, numLeft }) => {
       <Button
         variant="list"
         onClick={() => setIsListInEdit(true)}
-        text={`Add a new list (${numLeft})`}
+        text={`Add a new list`}
       />
     );
   }

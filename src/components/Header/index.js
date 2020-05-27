@@ -2,10 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
+import { ternaryBackgroundColor } from "../Theme";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 const Wrapper = styled.div`
   height: 50px;
-  background-color: black;
+  background-color: ${ternaryBackgroundColor};
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -23,6 +26,7 @@ const HomeLink = styled(Link)`
 `;
 
 const HomeLinkLogo = styled.div`
+  font-family: fantasy;
   font-size: 2rem;
   padding: 4px;
   color: white;
@@ -43,7 +47,7 @@ const GithubLink = styled.a`
   }
 `;
 
-const Header = () => {
+const Header = ({ toggleTheme, darkMode }) => {
   return (
     <Wrapper>
       <HomeLink to="/" id="homeLink">
@@ -53,6 +57,23 @@ const Header = () => {
           </span>
         </HomeLinkLogo>
       </HomeLink>
+      {/* <div className="radio">
+        <label>
+          <input type="checkbox" checked={darkMode} onChange={toggleTheme} />
+          Enable Dark Mode
+        </label>
+      </div> */}
+      <FormControlLabel
+        control={
+          <Switch
+            checked={darkMode}
+            onChange={toggleTheme}
+            name="checkedB"
+            color="primary"
+          />
+        }
+        label="Enable Dark Mode"
+      />
       <GithubLink
         id="githubLink"
         href="https://github.com/AkashBadhe/TaskManager"

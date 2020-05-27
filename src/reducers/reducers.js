@@ -1,5 +1,18 @@
 const cardsById = (state = {}, action) => {
   switch (action.type) {
+    case "GET_CARDS": {
+      let cardsObj = {};
+      action.payload.lists.forEach((list) => {
+        list.cards.forEach((card) => {
+          cardsObj[card._id] = card;
+        });
+      });
+      if (Object.keys(cardsObj).length) {
+        return { ...cardsObj };
+      } else {
+        return { ...state };
+      }
+    }
     case "ADD_CARD":
     case "EDIT_CARD_TITLE": {
       const { cardTitle, cardId } = action.payload;
@@ -26,6 +39,20 @@ const cardsById = (state = {}, action) => {
 
 const listsById = (state = {}, action) => {
   switch (action.type) {
+    case "GET_LISTS": {
+      let listsObj = {};
+      action.payload.lists.forEach((list) => {
+        listsObj[list._id] = {
+          ...list,
+          cards: list.cards.map((card) => card._id),
+        };
+      });
+      if (Object.keys(listsObj).length) {
+        return { ...listsObj };
+      } else {
+        return { ...state };
+      }
+    }
     case "ADD_CARD": {
       const { listId, cardId } = action.payload;
       return {
@@ -138,6 +165,28 @@ const boardsById = (state = {}, action) => {
         ...state,
         [sourceId]: { ...state[sourceId], lists: newLists },
       };
+    }
+    case "GET_BOARDS": {
+      let boardsObj = {};
+      action.payload.boards.forEach((board) => {
+        boardsObj[board._id] = board;
+      });
+      if (Object.keys(boardsObj).length) {
+        return { ...state, ...boardsObj };
+      } else {
+        return { ...state };
+      }
+    }
+    case "GET_BOARD": {
+      const board = action.payload.board;
+      if (Object.keys(board).length) {
+        return {
+          ...state,
+          [board._id]: { ...board, lists: board.lists.map((list) => list._id) },
+        };
+      } else {
+        return { ...state };
+      }
     }
     default:
       return state;
