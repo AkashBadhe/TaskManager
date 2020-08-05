@@ -25,7 +25,7 @@ npm start
 
 <img  src="/assets/TaskManagerDemo.gif"  alt="app demo"  width="90%"/>
 
-Demo Link: [https://quizzical-lamarr-30ce51.netlify.app/](https://quizzical-lamarr-30ce51.netlify.app/)  
+Demo Link: [https://github.com/AkashBadhe/TaskManager](https://github.com/AkashBadhe/TaskManager)  
 
 ## Switch Themes
 
