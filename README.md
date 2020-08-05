@@ -25,7 +25,7 @@ npm start
 
 <img  src="/assets/TaskManagerDemo.gif"  alt="app demo"  width="90%"/>
 
-Demo Link: [https://github.com/AkashBadhe/TaskManager](https://github.com/AkashBadhe/TaskManager)  
+Demo Link: [https://dnd-taskmanagerapp.netlify.app/](https://dnd-taskmanagerapp.netlify.app/)  
 
 ## Switch Themes
 
