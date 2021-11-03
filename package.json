@@ -39,7 +39,7 @@
     "shortid": "^2.2.15",
     "styled-components": "^5.1.0",
     "styled-theming": "^2.2.0",
-    "validator": "^9.4.1"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.15",
